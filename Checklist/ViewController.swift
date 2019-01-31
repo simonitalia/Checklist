@@ -10,26 +10,26 @@ import UIKit
 
 class ViewController: UITableViewController, ChecklistItemDetailDelegate {
     
-    var checklistItems: [ChecklistItem]
+    var checklistItems = [ChecklistItem]()
     
     @IBAction func addItem(_ sender: Any) {
         
-        let newRowIndex = checklistItems.count //store number of rows
-        let item = ChecklistItem()
-        
-        var titles = ["Sports", "Work", "Home", "I need something to do"]
-        let randomTitle = arc4random_uniform(UInt32(titles.count))
-        let title = titles[Int(randomTitle)]
-        item.text = title
-        item.checked = true
-        // set checked / unchecked state of item / row
-        checklistItems.append(item)
-        //append the item (new row) to the checklist array
-        
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        //call the tableview and call the insert rows method to insert just a row (not the content) Content is inserted by the data source
+//        let newRowIndex = checklistItems.count //store number of rows
+//        let item = ChecklistItem()
+//
+//        var titles = ["Sports", "Work", "Home", "I need something to do"]
+//        let randomTitle = arc4random_uniform(UInt32(titles.count))
+//        let title = titles[Int(randomTitle)]
+//        item.text = title
+//        item.checked = true
+//        // set checked / unchecked state of item / row
+//        checklistItems.append(item)
+//        //append the item (new row) to the checklist array
+//
+//        let indexPath = IndexPath(row: newRowIndex, section: 0)
+//        let indexPaths = [indexPath]
+//        tableView.insertRows(at: indexPaths, with: .automatic)
+//        //call the tableview and call the insert rows method to insert just a row (not the content) Content is inserted by the data source
     }
     
     override func viewDidLoad() {
@@ -45,41 +45,15 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         
-        checklistItems = [ChecklistItem]() //Declare checklist array of Checklist item class
-        
-        let row0Item = ChecklistItem() //Reference ChecklistItem class
-        row0Item.text = "Walk the Dog"
-        row0Item.checked = false
-        checklistItems.append(row0Item) // Adds this item to the Checklist Array
-        
-        let row1Item = ChecklistItem() //Reference ChecklistItem class
-        row1Item.text = "Brush teeth"
-        row1Item.checked = false
-        checklistItems.append(row1Item)
-        
-        let row2Item = ChecklistItem() //Reference ChecklistItem class
-        row2Item.text = "Learn iOS Development"
-        row2Item.checked = false
-        checklistItems.append(row2Item)
-        
-        let row3Item = ChecklistItem() //Reference ChecklistItem class
-        row3Item.text = "Soccer Practice"
-        row3Item.checked = false
-        checklistItems.append(row3Item)
-        
-        let row4Item = ChecklistItem() //Reference ChecklistItem class
-        row4Item.text = "Eat ice cream"
-        row4Item.checked = false
-        checklistItems.append(row4Item)
         
         super.init(coder: aDecoder)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            //Adds swipe to delete button to row, but doesn't actually delete the row. See susbequent code...
+            //Enable swipe to delete button to row
         
+        //Remove checklistItem row
         checklistItems.remove(at: indexPath.row)
-            // Deletes row from table
         
         //Show user row has been deleted
         /*let indexPaths = [indexPath]
@@ -149,7 +123,7 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
             let controller = segue.destination as! DetailViewController
             controller.delegate = self
             if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
-                controller.itemToEdit = checklistItems[indexPath.row]
+                controller.checklistItem = checklistItems[indexPath.row]
             }
         }
     }

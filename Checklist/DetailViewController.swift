@@ -10,10 +10,10 @@ import UIKit
 
 class DetailViewController: UITableViewController, UITextFieldDelegate {
     
-    var itemToEdit: ChecklistItem?
+    var checklistItem: ChecklistItem?
     
     weak var delegate: ChecklistItemDetailDelegate?
-        //Weak means if object ever gets recclaimed in memory, this property will become nil. It's not being held on to
+    //Weak means if object ever gets recclaimed in memory, this property will become nil. It's not being held on to
     
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -21,13 +21,24 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Set DetailVC as delegate
+        itemDetailTextField.delegate = self
+        
+        //Navigation Bar properties
         navigationItem.largeTitleDisplayMode = .never
         
-        if let item = itemToEdit {
+        //Set nav title
+        //if editing item
+        if let item = checklistItem {
             title = "Edit Item"
                 //title is a nav controller property
             itemDetailTextField.text = item.text
-            doneButton.isEnabled = true
+        
+        //If adding new item
+        } else {
+            title = "Add New Item"
+            doneButton.isEnabled = false
         }
     }
     
@@ -41,9 +52,9 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func done() {
         
         //If existing item is edited
-        if let itemToEdit = itemToEdit {
-            itemToEdit.text = itemDetailTextField.text!
-            delegate?.checklistItemDetailDidFinishEditing(self, didFinishEditing: itemToEdit)
+        if let item = checklistItem {
+            item.text = itemDetailTextField.text!
+            delegate?.checklistItemDetailDidFinishEditing(self, didFinishEditing: item)
         
         //If new item is added
         } else {
@@ -59,23 +70,33 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
         return nil
     }
     
-    //To force text field/label to be first responder when + / add new checklist item button is tapped
+    //To force text field/label to be first responder (first view) when + / add new checklist item button is tapped
     override func viewWillAppear(_ animated: Bool) {
         itemDetailTextField.becomeFirstResponder()
     }
     
-    //This method is called each time a user enters a character into a text field
+    //Detect when user interacts with TextField
+    @IBAction func itemDetailTextFieldEdited(_ sender: UITextField) {
+
+    }
+    
+
+    //This method is called each time a user enters a character into the UITextField
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     
-        let oldText = textField.text!
-        let stringRange = Range(range, in:oldText)
-        let newText = oldText.replacingCharacters(in: stringRange!, with: string)
-    
-        if newText.isEmpty {
+        //Handle Done button when editing item text
+        let existingText = textField.text!
+        let stringRange = Range(range, in: existingText)
+        let changedText = existingText.replacingCharacters(in: stringRange!, with: string)
+        
+        if changedText.isEmpty {
             doneButton.isEnabled = false
+
         } else {
             doneButton.isEnabled = true
-          }
+        }
+        
         return true
     }
+    
 }

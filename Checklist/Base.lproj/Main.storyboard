@@ -107,6 +107,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="done" destination="oEj-kF-wLC" eventType="editingDidEndOnExit" id="cwl-c5-Kx5"/>
+                                                        <action selector="itemDetailTextFieldEdited:" destination="oEj-kF-wLC" eventType="editingChanged" id="E15-CD-i0h"/>
                                                         <outlet property="pasteDelegate" destination="oEj-kF-wLC" id="TT2-xy-uZ2"/>
                                                     </connections>
                                                 </textField>
@@ -127,7 +128,7 @@
                                 <action selector="cancel" destination="oEj-kF-wLC" id="8ue-jJ-Oxz"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Done" id="cag-sq-x00">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="cag-sq-x00">
                             <connections>
                                 <action selector="done" destination="oEj-kF-wLC" id="PaS-NA-wrT"/>
                             </connections>
