@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UITableViewController, ItemDetailViewControllerDelegate {
+class ViewController: UITableViewController, ChecklistItemDetailDelegate {
     
     var checklistItems: [ChecklistItem]
     
@@ -111,49 +111,11 @@ class ViewController: UITableViewController, ItemDetailViewControllerDelegate {
         let item = checklistItems[indexPath.row]
         
         configureText(for: cell, with: item)
+        
         configureCheckmark(for: cell, with: item)
+        
         return cell
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            //sender = object that called the prepare function
-        if segue.identifier == "AddItem" {
-            let controller = segue.destination as! DetailViewController
-            controller.delegate = self
-        } else if segue.identifier == "EditItem" {
-            let controller = segue.destination as! DetailViewController
-            controller.delegate = self
-            if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
-                controller.itemToEdit = checklistItems[indexPath.row]
-            }
-        }
-    }
-    
-    func ItemDetailViewControllerDidCancel(_ controller: DetailViewController) {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func ItemDetailViewController(_ controller: DetailViewController, didFinishEditing item: ChecklistItem) {
-        
-        if let index = checklistItems.index(of: item) {
-            let indexPath = IndexPath(row: index, section: 0)
-            if let cell = tableView.cellForRow(at: indexPath) {
-                configureText(for: cell, with: item)
-            }
-        }
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func ItemDetailViewController(_ controller: DetailViewController, didFinishAdding item: ChecklistItem) {
-        
-        let newRowIndex = checklistItems.count
-        checklistItems.append(item)
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        navigationController?.popViewController(animated: true)
-    }
-    
     
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
@@ -167,10 +129,58 @@ class ViewController: UITableViewController, ItemDetailViewControllerDelegate {
         if item.checked {
             label.text = "√"
             label.textColor = UIColor.green
-        
+            
         } else {
             label.text = ""
-          }
+        }
     }
+    
+    //Prepare transition to DetailViewController via Segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            //sender = object that called the prepare function
+        
+        //Add new item
+        if segue.identifier == "NewItem" {
+            let controller = segue.destination as! DetailViewController
+            controller.delegate = self
+        
+        //Edit existing item
+        } else if segue.identifier == "EditItem" {
+            let controller = segue.destination as! DetailViewController
+            controller.delegate = self
+            if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
+                controller.itemToEdit = checklistItems[indexPath.row]
+            }
+        }
+    }
+    
+    //ChecklistItemDetailDelegate() protocol methods
+    func checklistItemDetailDidCancel(_ controller: DetailViewController) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    //Inform VC when user has finished adding a new item
+    func checklistItemDetailDidFinishAdding(_ controller: DetailViewController, didFinishAdding item: ChecklistItem) {
+        
+        let newRowIndex = checklistItems.count
+        checklistItems.append(item)
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    //Inform VC when user has finished editing an item
+    func checklistItemDetailDidFinishEditing(_ controller: DetailViewController, didFinishEditing item: ChecklistItem) {
+        
+        if let index = checklistItems.index(of: item) {
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                configureText(for: cell, with: item)
+            }
+        }
+        navigationController?.popViewController(animated: true)
+    }
+
 }
 

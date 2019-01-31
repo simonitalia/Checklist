@@ -8,27 +8,16 @@
 
 import UIKit
 
-//adding colon class ensures this will only work on classes. running on struct or enumeration will generate a compile error
-protocol ItemDetailViewControllerDelegate: class {
-    
-    func ItemDetailViewControllerDidCancel(_ controller: DetailViewController)
-        //When cancelling item add
-    
-    func ItemDetailViewController(_ controller: DetailViewController, didFinishAdding item: ChecklistItem)
-        // When adding an item
-    
-    func ItemDetailViewController(_ controller: DetailViewController, didFinishEditing item: ChecklistItem)
-}
-
 class DetailViewController: UITableViewController, UITextFieldDelegate {
     
     var itemToEdit: ChecklistItem?
     
-    weak var delegate: ItemDetailViewControllerDelegate? //Weak means if object ever gets recclaimed in memory, this property will become nil. It's not being held on to
+    weak var delegate: ChecklistItemDetailDelegate?
+        //Weak means if object ever gets recclaimed in memory, this property will become nil. It's not being held on to
     
-    @IBOutlet weak var cancelBarButton: UIBarButtonItem!
-    @IBOutlet weak var doneBarButton: UIBarButtonItem!
-    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var itemDetailTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,27 +25,32 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
         
         if let item = itemToEdit {
             title = "Edit Item"
-                //title is a built in property on navigation controller
-            textField.text = item.text
-            doneBarButton.isEnabled = true
+                //title is a nav controller property
+            itemDetailTextField.text = item.text
+            doneButton.isEnabled = true
         }
     }
     
-    //Cancel Add row button method
+    //Cancel Add new or edit item
     @IBAction func cancel() {
         navigationController?.popViewController(animated: true)
-        delegate?.ItemDetailViewControllerDidCancel(self)
+        delegate?.checklistItemDetailDidCancel(self)
     }
     
+    //Handle when user is done
     @IBAction func done() {
+        
+        //If existing item is edited
         if let itemToEdit = itemToEdit {
-            itemToEdit.text = textField.text!
-            delegate?.ItemDetailViewController(self, didFinishEditing: itemToEdit)
+            itemToEdit.text = itemDetailTextField.text!
+            delegate?.checklistItemDetailDidFinishEditing(self, didFinishEditing: itemToEdit)
+        
+        //If new item is added
         } else {
             let item = ChecklistItem()
-            item.text = textField.text!
+            item.text = itemDetailTextField.text!
             item.checked = false
-            delegate?.ItemDetailViewController(self, didFinishAdding: item)
+            delegate?.checklistItemDetailDidFinishAdding(self, didFinishAdding: item)
           }
     }
 
@@ -67,7 +61,7 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
     
     //To force text field/label to be first responder when + / add new checklist item button is tapped
     override func viewWillAppear(_ animated: Bool) {
-        textField.becomeFirstResponder()
+        itemDetailTextField.becomeFirstResponder()
     }
     
     //This method is called each time a user enters a character into a text field
@@ -78,9 +72,9 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
         let newText = oldText.replacingCharacters(in: stringRange!, with: string)
     
         if newText.isEmpty {
-            doneBarButton.isEnabled = false
+            doneButton.isEnabled = false
         } else {
-            doneBarButton.isEnabled = true
+            doneButton.isEnabled = true
           }
         return true
     }

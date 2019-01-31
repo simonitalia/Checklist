@@ -54,7 +54,7 @@
                     <navigationItem key="navigationItem" title="Checklist" id="zTc-2p-4mX">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ubn-QO-RT0">
                             <connections>
-                                <segue destination="oEj-kF-wLC" kind="show" identifier="AddItem" id="rIb-jZ-1QT"/>
+                                <segue destination="oEj-kF-wLC" kind="show" identifier="NewItem" id="rIb-jZ-1QT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -134,9 +134,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="cancelBarButton" destination="inO-BJ-wwf" id="oce-75-dSt"/>
-                        <outlet property="doneBarButton" destination="cag-sq-x00" id="Exk-5A-In1"/>
-                        <outlet property="textField" destination="z8c-9R-iVU" id="tDR-Bz-AnA"/>
+                        <outlet property="cancelButton" destination="inO-BJ-wwf" id="oce-75-dSt"/>
+                        <outlet property="doneButton" destination="cag-sq-x00" id="Exk-5A-In1"/>
+                        <outlet property="itemDetailTextField" destination="z8c-9R-iVU" id="tDR-Bz-AnA"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZxV-zF-vnc" userLabel="First Responder" sceneMemberID="firstResponder"/>
