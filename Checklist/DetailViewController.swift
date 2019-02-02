@@ -30,10 +30,10 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
         
         //Set nav title
         //if editing item
-        if let item = checklistItem {
+        if let checklistItem = checklistItem {
             title = "Edit Item"
                 //title is a nav controller property
-            itemDetailTextField.text = item.text
+            itemDetailTextField.text = checklistItem.text
         
         //If adding new item
         } else {
@@ -52,17 +52,19 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func done() {
         
         //If existing item is edited
-        if let item = checklistItem {
-            item.text = itemDetailTextField.text!
-            delegate?.checklistItemDetailDidFinishEditing(self, didFinishEditing: item)
+        if let checklistItem = checklistItem {
+            checklistItem.text = itemDetailTextField.text!
+            delegate?.checklistItemDetailDidFinishEditing(self, didFinishEditing: checklistItem)
         
         //If new item is added
         } else {
-            let item = ChecklistItem()
-            item.text = itemDetailTextField.text!
-            item.checked = false
-            delegate?.checklistItemDetailDidFinishAdding(self, didFinishAdding: item)
+            let checklistItem = ChecklistItem(text: itemDetailTextField.text!, checked: false)
+            
+            delegate?.checklistItemDetailDidFinishAdding(self, didFinishAdding: checklistItem)
           }
+        
+        //Save data to disk
+        delegate?.saveData()
     }
 
     //Remove text field highlighting

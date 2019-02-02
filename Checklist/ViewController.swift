@@ -11,25 +11,10 @@ import UIKit
 class ViewController: UITableViewController, ChecklistItemDetailDelegate {
     
     var checklistItems = [ChecklistItem]()
+    var checklistItem: ChecklistItem!
     
     @IBAction func addItem(_ sender: Any) {
         
-//        let newRowIndex = checklistItems.count //store number of rows
-//        let item = ChecklistItem()
-//
-//        var titles = ["Sports", "Work", "Home", "I need something to do"]
-//        let randomTitle = arc4random_uniform(UInt32(titles.count))
-//        let title = titles[Int(randomTitle)]
-//        item.text = title
-//        item.checked = true
-//        // set checked / unchecked state of item / row
-//        checklistItems.append(item)
-//        //append the item (new row) to the checklist array
-//
-//        let indexPath = IndexPath(row: newRowIndex, section: 0)
-//        let indexPaths = [indexPath]
-//        tableView.insertRows(at: indexPaths, with: .automatic)
-//        //call the tableview and call the insert rows method to insert just a row (not the content) Content is inserted by the data source
     }
     
     override func viewDidLoad() {
@@ -43,12 +28,6 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        
-        
-        super.init(coder: aDecoder)
-    }
-    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
             //Enable swipe to delete button to row
         
@@ -60,6 +39,9 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
         tableView.deleteRows(at: indexPaths, with: .automatic)*/
         
         tableView.reloadData()
+        
+        //Update the saved data so removed row isn't load on app launch
+        saveData()
     }
     
     //Following method called to determine how many table view cells are returned in the current table view section
@@ -77,6 +59,9 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        //Save checkmark state to disk
+        saveData()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -155,6 +140,14 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
         }
         navigationController?.popViewController(animated: true)
     }
-
+    
+    //Save/write data (checklistItems array) to disk method
+    func saveData() {
+        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: checklistItems, requiringSecureCoding: false) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "checklistItems")
+        }
+    }
+    
 }
 

@@ -19,4 +19,6 @@ protocol ChecklistItemDetailDelegate: class {
     
     func checklistItemDetailDidFinishEditing(_ controller: DetailViewController, didFinishEditing item: ChecklistItem)
         //When editing an item
+    
+    func saveData()
 }
