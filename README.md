@@ -38,4 +38,4 @@ Some features included are not part of the guided project, but are added as stre
 
 # Completed
 May, 2018 (initial version)
-February, 2019 (current version)
+</br>February, 2019 (current version)
