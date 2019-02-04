@@ -54,17 +54,17 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
         //If existing item is edited
         if let checklistItem = checklistItem {
             checklistItem.text = itemDetailTextField.text!
+            
+            //Pass data to VC
             delegate?.checklistItemDetailDidFinishEditing(self, didFinishEditing: checklistItem)
         
         //If new item is added
         } else {
-            let checklistItem = ChecklistItem(text: itemDetailTextField.text!, checked: false)
+            let checklistItem = ChecklistItem(text: itemDetailTextField.text!, checked: false, checkedLabel: "")
             
+            //Pass data to VC
             delegate?.checklistItemDetailDidFinishAdding(self, didFinishAdding: checklistItem)
-          }
-        
-        //Save data to disk
-        delegate?.saveData()
+        }
     }
 
     //Remove text field highlighting
@@ -77,12 +77,6 @@ class DetailViewController: UITableViewController, UITextFieldDelegate {
         itemDetailTextField.becomeFirstResponder()
     }
     
-    //Detect when user interacts with TextField
-    @IBAction func itemDetailTextFieldEdited(_ sender: UITextField) {
-
-    }
-    
-
     //This method is called each time a user enters a character into the UITextField
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     

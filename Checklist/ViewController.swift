@@ -11,15 +11,21 @@ import UIKit
 class ViewController: UITableViewController, ChecklistItemDetailDelegate {
     
     var checklistItems = [ChecklistItem]()
-    var checklistItem: ChecklistItem!
-    
-    @IBAction func addItem(_ sender: Any) {
-        
-    }
+//    var checklistItem = ChecklistItem(text: "", checked: false, checkedLabel: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        //Display (if any) saved Object data on app launch
+        let defaults = UserDefaults.standard
+
+        if let savedData = defaults.object(forKey: "checklistItems") as? Data {
+            if let decodedSavedData = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedData) as? [ChecklistItem] {
+                checklistItems = decodedSavedData ?? [ChecklistItem]()
+            }
+        }
+        
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -28,15 +34,11 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    //Enable swipe to delete button to row
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            //Enable swipe to delete button to row
         
         //Remove checklistItem row
         checklistItems.remove(at: indexPath.row)
-        
-        //Show user row has been deleted
-        /*let indexPaths = [indexPath]
-        tableView.deleteRows(at: indexPaths, with: .automatic)*/
         
         tableView.reloadData()
         
@@ -49,54 +51,63 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
         return checklistItems.count
     }
     
+    //Handle toggling of checkmark indicator
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        if let cell = tableView.cellForRow(at: indexPath) {
-            let item = checklistItems[indexPath.row]
-            item.checkmarkToggle()
+            let checklistItem = checklistItems[indexPath.row]
+        
+            checklistItem.checkmarkToggle()
                 //Calls toggleChecked function from Checklistitem class
         
-            configureCheckmark(for: cell, with: item)
+            //Save checkmark state to disk
+            saveData()
+        
+            //Pass in checklistItem to method to set the checkmark label
+            configureCheckmark(for: cell, with: checklistItem)
+
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        //Save checkmark state to disk
-        saveData()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath)
-        let item = checklistItems[indexPath.row]
         
-        configureText(for: cell, with: item)
+        let checklistItem = checklistItems[indexPath.row]
         
-        configureCheckmark(for: cell, with: item)
+        //Set Text label
+        configureText(for: cell, with: checklistItem)
+        
+        //Set checkmark label
+        configureCheckmark(for: cell, with: checklistItem)
         
         return cell
     }
     
-    func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
+    func configureText(for cell: UITableViewCell, with checklistItem: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
-        label.text = item.text
+        
+        label.text = checklistItem.text
     }
     
-    func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem) {
+    func configureCheckmark(for cell: UITableViewCell, with checklistItem: ChecklistItem) {
         
         let label = cell.viewWithTag(1001) as! UILabel
         
-        if item.checked {
+        if checklistItem.checked {
             label.text = "√"
-            label.textColor = UIColor.green
+//            checklistItem.checkedLabel = "√"
             
         } else {
             label.text = ""
+//            checklistItem.checkedLabel = ""
         }
     }
     
     //Prepare transition to DetailViewController via Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            //sender = object that called the prepare function
+        //sender = object that called the prepare function
         
         //Add new item
         if segue.identifier == "NewItem" {
@@ -119,26 +130,35 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
     }
     
     //Inform VC when user has finished adding a new item
-    func checklistItemDetailDidFinishAdding(_ controller: DetailViewController, didFinishAdding item: ChecklistItem) {
+    func checklistItemDetailDidFinishAdding(_ controller: DetailViewController, didFinishAdding checklistItem: ChecklistItem) {
         
         let newRowIndex = checklistItems.count
-        checklistItems.append(item)
+        checklistItems.append(checklistItem)
         let indexPath = IndexPath(row: newRowIndex, section: 0)
         let indexPaths = [indexPath]
         tableView.insertRows(at: indexPaths, with: .automatic)
         navigationController?.popViewController(animated: true)
+        
+        //Save new checklistItem data object to disk
+        saveData()
+        
     }
     
     //Inform VC when user has finished editing an item
-    func checklistItemDetailDidFinishEditing(_ controller: DetailViewController, didFinishEditing item: ChecklistItem) {
+    func checklistItemDetailDidFinishEditing(_ controller: DetailViewController, didFinishEditing checklistItem: ChecklistItem) {
         
-        if let index = checklistItems.index(of: item) {
+        if let index = checklistItems.index(of: checklistItem) {
             let indexPath = IndexPath(row: index, section: 0)
             if let cell = tableView.cellForRow(at: indexPath) {
-                configureText(for: cell, with: item)
+                configureText(for: cell, with: checklistItem)
+                
+                //Save edited data
+                saveData()
             }
         }
+        
         navigationController?.popViewController(animated: true)
+        
     }
     
     //Save/write data (checklistItems array) to disk method
@@ -148,6 +168,5 @@ class ViewController: UITableViewController, ChecklistItemDetailDelegate {
             defaults.set(savedData, forKey: "checklistItems")
         }
     }
-    
 }
 

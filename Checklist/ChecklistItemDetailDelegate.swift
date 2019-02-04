@@ -21,4 +21,5 @@ protocol ChecklistItemDetailDelegate: class {
         //When editing an item
     
     func saveData()
+        // To save data to disk when changes occur on delegate
 }

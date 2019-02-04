@@ -107,7 +107,6 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="done" destination="oEj-kF-wLC" eventType="editingDidEndOnExit" id="cwl-c5-Kx5"/>
-                                                        <action selector="itemDetailTextFieldEdited:" destination="oEj-kF-wLC" eventType="editingChanged" id="E15-CD-i0h"/>
                                                         <outlet property="pasteDelegate" destination="oEj-kF-wLC" id="TT2-xy-uZ2"/>
                                                     </connections>
                                                 </textField>
@@ -146,6 +145,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="sM5-bv-WRi"/>
+        <segue reference="rIb-jZ-1QT"/>
     </inferredMetricsTieBreakers>
 </document>
