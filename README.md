@@ -6,7 +6,7 @@ iOS and Swift for Beginners
 
 # Education supplier
 This iOS app is developed as a guided project from the "Your second iOS App" video tutorials, which forms part of the learning path tutorial series "iOS and Swift for Beginners" authored by https://raywenderlich.com.
-</br> Note! The initial version of the app covered all items below, except saving data using UserDefaults / NSCoding. These topics were completed later as a Stretch goal and relfected in the current version of the app. 
+</br> Note! The initial version of the app covered all items below, except saving data using UserDefaults / NSCoding and source control with Git / Github. These topics were completed later as a Stretch goal and relfected in the current version of the app. 
 
 # Topics / milestones
 
@@ -30,7 +30,7 @@ This iOS app is developed as a guided project from the "Your second iOS App" vid
 
 # Stretch goals
 Some features included are not part of the guided project, but are added as stretch goals. Stretch goals apply learned knowledge to accomplish and are completed unassisted. Stretch goals may either be suggested by the teaching instructor or self imposed. Strecth goals / features implemented (if any) will be listed here.
-These goals are reflected in the current version of the app.
+</br>These goals are reflected in the current version of the app.
 
 - Saving (and Loading) data in iOS via UserDefaults and NSCoding (suggested)
 
