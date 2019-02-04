@@ -48,6 +48,8 @@ Some features included are not part of the guided project, but are added as stre
 
 - Version / Source control with Git (self imposed)
 
+- App icon (self imposed)
+
 # Completed
 May, 2018 (initial version)
 </br>February, 2019 (current version)
