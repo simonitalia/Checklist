@@ -20,6 +20,18 @@ This iOS app is developed as a guided project from the "Your second Swift 4 iOS 
 
 - Navigation bar action items
 
+- Swipe to delete
+
+- MVC (Model View Controller)
+
+- Refactoring
+
+- Static cells
+
+- Responder chain
+
+- Control events
+
 - UserDefaults
 
 - NSObject
