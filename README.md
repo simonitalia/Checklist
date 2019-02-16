@@ -58,3 +58,4 @@ Some features included are not part of the guided project, but are added as stre
 
 - <strong>Deployment Target (iOS version): </strong>11.3 and higher
 - <strong>Supported Devices: </strong>Universal
+- <strong>Optimized for: </strong>iPhone
