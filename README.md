@@ -51,7 +51,7 @@ Some features included are not part of the guided project, but are added as stre
 - App icon (self imposed)
 
 # Completed
-- May, 2018 (initial version)</br>
+- May, 2018 (initial version)
 - February, 2019 (current version)
 
 # Deployment information
