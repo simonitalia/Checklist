@@ -51,11 +51,10 @@ Some features included are not part of the guided project, but are added as stre
 - App icon (self imposed)
 
 # Completed
-May, 2018 (initial version)</br>
-February, 2019 (current version)
+- May, 2018 (initial version)</br>
+- February, 2019 (current version)
 
 # Deployment information
 
-<strong>Deployment Target (iOS version): </strong>11.3 and higher
-
-<strong>Supported Devices: </strong>Universal
+- <strong>Deployment Target (iOS version): </strong>11.3 and higher
+- <strong>Supported Devices: </strong>Universal
