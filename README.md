@@ -5,7 +5,7 @@ Checklist
 iOS and Swift for Beginners
 
 # Education supplier
-This iOS app is developed as a guided project from the "Your second Swift 4 iOS 11 app" video tutorials, which forms part of the learning path tutorial series "iOS and Swift for Beginners" authored by https://raywenderlich.com.
+This iOS app project is from the "Your second Swift 4 iOS 11 app" video tutorials, which forms part of the learning path tutorial series "iOS and Swift for Beginners" authored by https://raywenderlich.com.
 </br> Note! The initial version of the app covered all items below, except saving data using UserDefaults / NSCoding and source control with Git / Github. These topics were completed later as a Stretch goal and relfected in the current version of the app. 
 
 # Topics / milestones
